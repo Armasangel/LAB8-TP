@@ -184,6 +184,105 @@ print(f"    [{media_sobres - 2*std_sobres:.2f},  {media_sobres + 2*std_sobres:.2
 print(f"  Coeficiente de variación (σ/μ): {std_sobres/media_sobres:.4f}  "
       f"→ variabilidad del {std_sobres/media_sobres*100:.2f}% respecto a la media")
 
+
+
+# ─────────────────────────────────────────────
+#  PROBLEMA 2: PROBABILIDAD DE COMPLETAR CON M SOBRES FIJOS
+# ─────────────────────────────────────────────
+
+valores_M = [20, 25, 30, 35, 40, 45, 50, 60, 70, 80]
+rng2 = np.random.default_rng(SEED)
+
+proporciones = []
+
+for M in valores_M:
+    exitos = 0
+    for _ in range(R):
+        obtenidas = np.zeros(N, dtype=bool)
+        for _ in range(M):
+            sobre = rng2.choice(N, size=S, replace=False)
+            for sticker in sobre:
+                obtenidas[sticker] = True
+        if obtenidas.all():
+            exitos += 1
+    proporciones.append(exitos / R)
+
+# ── Tabla de resultados ──
+print("=" * 60)
+print("  PROBLEMA 2: P(Completar álbum | M sobres)")
+print("=" * 60)
+print(f"\n{'M':<8} {'Proporción':>12} {'Porcentaje':>12}")
+print("-" * 34)
+for M, prop in zip(valores_M, proporciones):
+    print(f"{M:<8} {prop:>12.4f} {prop*100:>11.2f}%")
+
+# ── Umbral 50% y 90% ──
+M50 = next((M for M, p in zip(valores_M, proporciones) if p >= 0.50), None)
+M90 = next((M for M, p in zip(valores_M, proporciones) if p >= 0.90), None)
+print(f"Primer M con P ≥ 50% : M = {M50}  (P = {proporciones[valores_M.index(M50)]:.4f})" if M50 else "Primer M con P ≥ 50% : No alcanzado en los valores de M probados")
+print(f"Primer M con P ≥ 90% : M = {M90}  (P = {proporciones[valores_M.index(M90)]:.4f})" if M90 else f"Primer M con P ≥ 90% : No alcanzado — máximo fue {max(proporciones)*100:.2f}% con M={valores_M[proporciones.index(max(proporciones))]}")
+
+# ── Comparación con mediana del Problema 1 ──
+if M50:
+    print(f"\nMediana de sobres necesarios (Problema 1) : {mediana_sobres:.1f}")
+    print(f"Primer M con P(M) ≥ 0.50                  : {M50}")
+if M50:
+    print(f"Mediana de sobres necesarios (Problema 1) : {mediana_sobres:.1f}")
+    print(f"Primer M con P(M) ≥ 0.50                  : {M50}")
+    print(f"  → Diferencia: {abs(M50 - mediana_sobres):.1f} sobres")
+else:
+    print("P(M) = 0.50 no se alcanzó en los valores de M evaluados.")
+
+# ── Gráfica de barras ──
+fig, ax = plt.subplots(figsize=(11, 6))
+fig.patch.set_facecolor("#0d1117")
+ax.set_facecolor("#161b22")
+
+colores = ["#238636" if p >= 0.90 else "#f0a500" if p >= 0.50 else "#c0392b"
+           for p in proporciones]
+
+bars = ax.bar([str(m) for m in valores_M], [p * 100 for p in proporciones],
+              color=colores, edgecolor="#0d1117", linewidth=0.6, width=0.6)
+
+# Etiquetas encima de cada barra
+for bar, prop in zip(bars, proporciones):
+    ax.text(bar.get_x() + bar.get_width() / 2, bar.get_height() + 1.2,
+            f"{prop*100:.1f}%", ha="center", va="bottom",
+            color="white", fontsize=9, fontweight="bold")
+
+# Líneas de referencia
+ax.axhline(50, color="#f0e68c", linewidth=1.6, linestyle="--", label="Umbral 50%")
+ax.axhline(90, color="#79c0ff", linewidth=1.6, linestyle="--", label="Umbral 90%")
+
+# Leyenda de colores
+from matplotlib.patches import Patch
+leyenda_colores = [
+    Patch(facecolor="#c0392b", label="P < 50%"),
+    Patch(facecolor="#f0a500", label="50% ≤ P < 90%"),
+    Patch(facecolor="#238636", label="P ≥ 90%"),
+]
+ax.legend(handles=leyenda_colores, framealpha=0.25, facecolor="#21262d",
+          edgecolor="#30363d", labelcolor="white", fontsize=10, loc="upper left")
+
+ax.set_title(
+    f"P(Completar álbum | M sobres)  —  N={N}, S={S}, R={R:,} simulaciones",
+    color="white", fontsize=13, fontweight="bold", pad=14
+)
+ax.set_xlabel("M  (sobres comprados)", color="#c9d1d9", fontsize=11)
+ax.set_ylabel("Probabilidad estimada (%)", color="#c9d1d9", fontsize=11)
+ax.set_ylim(0, 108)
+ax.tick_params(colors="#c9d1d9")
+for spine in ax.spines.values():
+    spine.set_edgecolor("#30363d")
+ax.yaxis.set_major_formatter(ticker.FuncFormatter(lambda x, _: f"{x:.0f}%"))
+
+plt.tight_layout()
+plt.savefig("prob2_barras_album_fifa2026.png", dpi=150,
+            bbox_inches="tight", facecolor=fig.get_facecolor())
+plt.show()
+print("\n[✓] Gráfica guardada como 'prob2_barras_album_fifa2026.png'")
+print("=" * 60)
+
 # ─────────────────────────────────────────────
 #  HISTOGRAMA
 # ─────────────────────────────────────────────
