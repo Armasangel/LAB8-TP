@@ -1,0 +1,89 @@
+════════════════════════════════════════════════════════════
+  ETAPA 3: Incorporación del presupuesto y costo
+════════════════════════════════════════════════════════════
+============================================================
+ETAPA 3 — Preguntas de análisis
+============================================================
+
+Pregunta 1:
+  Máx sobres con Q1000  : 105
+  Mín sobres teórico (sin rep.): 15
+  Estampas máx obtenibles (Q1000): 735
+  → En teoría SÍ alcanzaría (si no hubiera repetidos).
+
+[Simulando sobres sueltos…]
+[Simulando caja de 104 sobres…]
+[Simulando estrategia mixta (caja + sueltos)…]
+
+── Sobres sueltos (presupuesto Q1000) ──
+  P(completar álbum)              : 0.9436  (94.36 %)
+  E[sobres comprados]             : 73.56
+  E[estampas distintas | no comp.]: 98.97
+
+── Caja 104 sobres (Q975) ──
+  P(completar álbum)              : 0.9342  (93.42 %)
+  ¿Conviene la caja? NO (Δp = -0.94 pp)
+
+── Estrategia mixta (caja Q975 + hasta 2 sobres sueltos) ──
+  Presupuesto restante tras caja  : Q25.00
+  Sobres sueltos extra máx posibles: 2
+  P(completar álbum)              : 0.9413  (94.13 %)
+  E[sobres totales]               : 104.13
+
+[Gráfica guardada como etapa3_barras.png]
+
+════════════════════════════════════════════════════════════
+  ETAPA 4: Efecto del intercambio de repetidas
+════════════════════════════════════════════════════════════
+
+── Parte A: Sobres hasta completar álbum por K ──
+
+  K=∞ (sin intercambio): media=74.43, std=17.84
+  K= 1: media=15.00, std=0.00, reducción=79.8%
+  K= 2: media=20.02, std=0.55, reducción=73.1%
+  K= 5: media=28.56, std=1.47, reducción=61.6%
+  K=10: media=35.91, std=2.47, reducción=51.8%
+
+  Pregunta 2: Ahorro promedio K=2 vs sin intercambio: 54.41 sobres ≈ Q516.93
+
+[Gráfica guardada como etapa4A_histogramas.png]
+
+── Parte B: P(éxito) vs M por K ──
+
+     M |  Sin intercambio |    K=1 |    K=2 |    K=5 |   K=10
+  -----------------------------------------------------------
+    20 |           0.0000 | 1.0000 | 0.8406 | 0.0000 | 0.0000
+    25 |           0.0000 | 1.0000 | 1.0000 | 0.0092 | 0.0000
+    30 |           0.0000 | 1.0000 | 1.0000 | 0.9080 | 0.0151
+    35 |           0.0000 | 1.0000 | 1.0000 | 1.0000 | 0.5133
+    40 |           0.0011 | 1.0000 | 1.0000 | 1.0000 | 0.9798
+    45 |           0.0117 | 1.0000 | 1.0000 | 1.0000 | 0.9998
+    50 |           0.0399 | 1.0000 | 1.0000 | 1.0000 | 1.0000
+    55 |           0.1123 | 1.0000 | 1.0000 | 1.0000 | 1.0000
+    60 |           0.2133 | 1.0000 | 1.0000 | 1.0000 | 1.0000
+    65 |           0.3462 | 1.0000 | 1.0000 | 1.0000 | 1.0000
+    70 |           0.4807 | 1.0000 | 1.0000 | 1.0000 | 1.0000
+
+  Sobres mínimos para alcanzar cada umbral de probabilidad:
+       K |   50% |   75% |   90%
+  --------------------------------
+  Sin intercambio |   >70 |   >70 |   >70 |
+              K=1 |    20 |    20 |    20 |
+              K=2 |    20 |    20 |    25 |
+              K=5 |    30 |    30 |    30 |
+             K=10 |    35 |    40 |    40 |
+
+  Pregunta 3 (M=45):
+    K=10 → 0.9998   K=5 → 1.0000   K=1 → 1.0000
+    Δ(K10→K5) = 0.02 pp
+    Δ(K5→K1)  = 0.00 pp
+
+  Pregunta 5 — Costo efectivo por canje:
+    K= 1: Q1.3571 por estampa nueva obtenida por canje
+    K= 2: Q2.7143 por estampa nueva obtenida por canje
+    K= 5: Q6.7857 por estampa nueva obtenida por canje
+    K=10: Q13.5714 por estampa nueva obtenida por canje
+
+[Gráfica guardada como etapa4B_prob_vs_M.png]
+
+✓ Simulaciones completadas
