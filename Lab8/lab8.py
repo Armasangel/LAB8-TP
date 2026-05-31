@@ -16,9 +16,9 @@ import matplotlib.ticker as mtick
 # ──────────────────────────────────────────────
 # Parámetros globales
 # ──────────────────────────────────────────────
-N      = 100       # Número de estampas distintas
+N      = 980       # Número de estampas distintas
 S      = 7         # Estampas por sobre
-R      = 10_000    # Simulaciones
+R      = 100    # Simulaciones
 SEED   = 2026
 PRECIO = 9.50      # Q por sobre
 BUDGET = 1_000.0   # Q presupuesto total
